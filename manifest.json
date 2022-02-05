@@ -1,0 +1,24 @@
+{
+  "name": "Web Clipper",
+  "description": "Build an Extension!",
+  "version": "1.0",
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "action": {
+    "default_title": "Make this page red",
+    "default_popup": "hello.html",
+    "default_icon": "icon.png"
+  },
+  "icons": {
+    "16": "icon.png"
+  },
+  "permissions": ["storage", "activeTab", "contextMenus", "scripting"]
+}
