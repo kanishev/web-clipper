@@ -14,7 +14,7 @@
   ],
   "action": {
     "default_title": "Make this page red",
-    "default_popup": "hello.html",
+    "default_popup": "popup.html",
     "default_icon": "icon.png"
   },
   "icons": {

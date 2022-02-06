@@ -18,6 +18,6 @@ chrome.contextMenus.onClicked.addListener((target) => {
   });
 });
 
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  if (request.greeting === "hello") sendResponse({ farewell: "goodbye" });
-});
+// chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+//   if (request.greeting === "hello") sendResponse({ farewell: "goodbye" });
+// });
