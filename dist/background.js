@@ -1,0 +1,1 @@
+let contextMenu={id:"bla",title:"bla",contexts:["all"]};chrome.contextMenus.create(contextMenu),chrome.contextMenus.onClicked.addListener((e=>{chrome.tabs.query({active:!0,currentWindow:!0},(function(e){chrome.tabs.sendMessage(e[0].id,{greeting:"hello"},(function(e){console.log(e.farewell)}))}))}));

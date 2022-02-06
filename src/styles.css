@@ -1,0 +1,9 @@
+h1 {
+  color: red;
+}
+
+div {
+  width: 10px;
+  height: 10px;
+  background-image: url("./icon.png");
+}
