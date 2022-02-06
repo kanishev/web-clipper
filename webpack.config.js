@@ -6,7 +6,7 @@ module.exports = {
   context: path.resolve(__dirname, "./src"),
   mode: "development",
   entry: {
-    popup: "./popup.js",
+    popup: "./popup.coffee",
   },
   output: {
     filename: "[name].js",
@@ -39,6 +39,24 @@ module.exports = {
       {
         test: /\.css$/i,
         use: ["style-loader", "css-loader"],
+      },
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        type: "asset/resource",
+      },
+      {
+        test: /\.m?js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ["@babel/preset-env"],
+          },
+        },
+      },
+      {
+        test: /\.coffee$/,
+        loader: "coffee-loader",
       },
     ],
   },
