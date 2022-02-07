@@ -1,1 +1,1 @@
-function foo(){console.log("hi")}chrome.runtime.onMessage.addListener((e=>{console.log("Message пришел",e)})),chrome.runtime.sendMessage({greeting:"hello"},(function(e){console.log("2",e.farewell)}));
+chrome.runtime.onMessage.addListener((e=>{console.log("Message пришел",e)})),chrome.runtime.sendMessage({greeting:"hello"},(function(e){console.log("2",e.farewell)}));
