@@ -1,1 +1,1 @@
-console.log(chrome.runtime),chrome.runtime.onMessage.addListener((()=>{console.log("Message пришел"),document.body.style.background="red"})),chrome.runtime.onConnect.addListener((()=>{console.log("Connected")}));
+function foo(){console.log("hi")}chrome.runtime.onMessage.addListener((e=>{console.log("Message пришел",e)})),chrome.runtime.sendMessage({greeting:"hello"},(function(e){console.log("2",e.farewell)}));

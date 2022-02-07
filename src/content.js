@@ -1,17 +1,7 @@
-// chrome.runtime.onMessage.addListener(function () {
-//   console.log("OnMEssage");
-// });
-console.log(chrome.runtime);
-
-// chrome.runtime.sendMessage({ greeting: "hello" }, function (response) {
-//   console.log(response.farewell);
-// });
-
-chrome.runtime.onMessage.addListener(() => {
-  console.log("Message пришел");
-  document.body.style.background = "red";
+chrome.runtime.onMessage.addListener((message) => {
+  console.log("Message пришел", message);
 });
 
-chrome.runtime.onConnect.addListener(() => {
-  console.log("Connected");
+chrome.runtime.sendMessage({ greeting: "hello" }, function (response) {
+  console.log("2", response.farewell);
 });
