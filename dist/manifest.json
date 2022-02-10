@@ -1,5 +1,5 @@
 {
-  "name": "Web Clipper",
+  "name": "Clipper Client",
   "description": "Build an Extension!",
   "version": "1.0",
   "manifest_version": 3,
@@ -13,7 +13,7 @@
     }
   ],
   "externally_connectable": {
-    "matches": ["https://doka.guide/", "all_urls"]
+    "matches": ["http://localhost:8080/"]
   },
   "action": {
     "default_title": "Open",
