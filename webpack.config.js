@@ -6,7 +6,7 @@ module.exports = {
   context: path.resolve(__dirname, "./src"),
   mode: "development",
   entry: {
-    popup: "./popup.coffee",
+    popup: "./popup.js",
   },
   output: {
     filename: "[name].js",

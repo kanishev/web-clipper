@@ -1,17 +1,26 @@
-// chrome.runtime.onMessage.addListener(function () {
-//   console.log("OnMEssage");
-// });
-console.log(chrome.runtime);
-
-// chrome.runtime.sendMessage({ greeting: "hello" }, function (response) {
-//   console.log(response.farewell);
-// });
-
-chrome.runtime.onMessage.addListener(() => {
-  console.log("Message пришел");
-  document.body.style.background = "red";
+chrome.runtime.onMessage.addListener(function (message) {
+  console.log("Message", message);
 });
 
-chrome.runtime.onConnect.addListener(() => {
-  console.log("Connected");
-});
+window.addEventListener(
+  "message",
+  function (event) {
+    var USER_TOKEN;
+    if (event.source !== window) {
+      return;
+    }
+    if (event.data.type && event.data.type === "WEJE_CLIENT") {
+      USER_TOKEN = event.data.token;
+      console.log("Page script received: " + USER_TOKEN);
+      chrome.runtime.sendMessage(
+        {
+          jwt: USER_TOKEN,
+        },
+        function (response) {
+          console.log(response.message);
+        }
+      );
+    }
+  },
+  false
+);

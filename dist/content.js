@@ -1,1 +1,1 @@
-console.log(chrome.runtime),chrome.runtime.onMessage.addListener((()=>{console.log("Message пришел"),document.body.style.background="red"})),chrome.runtime.onConnect.addListener((()=>{console.log("Connected")}));
+chrome.runtime.onMessage.addListener((function(e){console.log("Message",e)})),window.addEventListener("message",(function(e){var n;e.source===window&&e.data.type&&"WEJE_CLIENT"===e.data.type&&(n=e.data.token,console.log("Page script received: "+n),chrome.runtime.sendMessage({jwt:n},(function(e){console.log(e.message)})))}),!1);
