@@ -1,1 +1,1 @@
-chrome.runtime.onMessage.addListener((function(e){console.log("Message",e)})),window.addEventListener("message",(function(e){var n;e.source===window&&e.data.type&&"WEJE_CLIENT"===e.data.type&&(n=e.data.token,console.log("Page script received: "+n),chrome.runtime.sendMessage({jwt:n},(function(e){console.log(e.message)})))}),!1);
+chrome.runtime.onMessage.addListener((function(e){console.log("Message",e)}));
