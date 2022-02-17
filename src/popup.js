@@ -7,11 +7,11 @@ const textPinner = document.getElementById("textPinner");
 const imagePinner = document.getElementById("imagePinner");
 
 textPinner.addEventListener("change", function (e) {
-  sendPinnerStatus(this.checked);
+  sendPinnerStatus(this.checked, "text");
 });
 
 imagePinner.addEventListener("change", function (e) {
-  sendPinnerStatus(this.checked);
+  sendPinnerStatus(this.checked, "image");
 });
 
 chrome.runtime.onMessageExternal.addListener(function (request) {
@@ -21,7 +21,6 @@ chrome.runtime.onMessageExternal.addListener(function (request) {
 });
 
 chrome.storage.local.get("token").then(({ token }) => {
-  console.log(token);
   toggleDisplayContent(token);
 });
 
@@ -35,10 +34,11 @@ function toggleDisplayContent(token) {
   }
 }
 
-function sendPinnerStatus(status) {
-  console.log(status);
-
-  chrome.runtime.sendMessage({ pinnerStatus: status }, function (response) {
-    console.log(response);
-  });
+function sendPinnerStatus(status, type) {
+  chrome.runtime.sendMessage(
+    { pinnerStatus: { status: status ? "on" : "off", type } },
+    function (response) {
+      console.log(response);
+    }
+  );
 }
