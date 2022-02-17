@@ -1,9 +1,97 @@
 h1 {
-  color: red;
+  color: #2f74eb;
 }
 
-div {
-  width: 10px;
-  height: 10px;
-  background-image: url("./icon.png");
+html {
+  width: 300px;
+  height: 200px;
+  font-family: cursive;
+}
+
+body {
+  display: grid;
+  height: inherit;
+  place-items: center;
+  place-content: space-evenly;
+  text-align: center;
+}
+
+a {
+  font-size: 14px;
+  color: #2f74eb;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.slider-checkbox {
+  position: relative;
+}
+.slider-checkbox input {
+  margin: 0px;
+  margin-top: 1px;
+  cursor: pointer;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  -moz-opacity: 0;
+  -khtml-opacity: 0;
+  opacity: 0;
+  position: absolute;
+  z-index: 1;
+  top: 0px;
+  left: 0px;
+  background: red;
+  width: 40px;
+  height: 20px;
+}
+.slider-checkbox input:checked + .label:before {
+  background-color: #2f74eb;
+  padding-left: 6px;
+}
+.slider-checkbox input:checked + .label:after {
+  left: 21px;
+}
+.slider-checkbox .label {
+  position: relative;
+  padding-left: 46px;
+}
+.slider-checkbox .label:before,
+.slider-checkbox .label:after {
+  position: absolute;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  transition: background-color 0.3s, left 0.3s;
+}
+.slider-checkbox .label:before {
+  content: "";
+  color: #fff;
+  box-sizing: border-box;
+  padding-left: 23px;
+  font-size: 12px;
+  line-height: 20px;
+  background-color: #888;
+  left: 0px;
+  top: 0px;
+  height: 20px;
+  width: 40px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+}
+.slider-checkbox .label:after {
+  content: "";
+  letter-spacing: 20px;
+  background: #fff;
+  left: 2px;
+  top: 2px;
+  height: 16px;
+  width: 16px;
+}
+
+.isNotAuth {
+  color: red;
 }

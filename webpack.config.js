@@ -30,7 +30,7 @@ module.exports = {
         { from: "manifest.json", to: path.resolve(__dirname, "dist") },
         { from: "background.js", to: path.resolve(__dirname, "dist") },
         { from: "content.js", to: path.resolve(__dirname, "dist") },
-        { from: "icon.png", to: path.resolve(__dirname, "dist") },
+        { from: "images", to: path.resolve(__dirname, "dist") },
       ],
     }),
   ],

@@ -19,5 +19,10 @@
     "default_title": "Open",
     "default_popup": "popup.html"
   },
-  "permissions": ["storage", "activeTab", "contextMenus", "scripting"]
+  "icons": {
+    "16": "icon16.png",
+    "24": "icon24.png",
+    "32": "icon32.png"
+  },
+  "permissions": ["activeTab", "contextMenus", "scripting", "storage"]
 }
