@@ -9,11 +9,10 @@ html {
 }
 
 body {
-  display: grid;
-  height: inherit;
-  place-items: center;
-  place-content: space-evenly;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 a {
