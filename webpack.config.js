@@ -7,6 +7,11 @@ module.exports = {
   mode: "development",
   entry: {
     popup: "./popup.js",
+    content: "/content.js",
+    pinner: "/pinner.js",
+    alert: "/alert.js",
+    utils: "./utils.js",
+    background: "/background.js",
   },
   output: {
     filename: "[name].js",
@@ -23,14 +28,12 @@ module.exports = {
       template: path.join(__dirname, "src", "./popup.html"),
       filename: "popup.html",
       clean: true,
-      // inject: false,
+      inject: false,
     }),
     new CopyPlugin({
       patterns: [
         { from: "manifest.json", to: path.resolve(__dirname, "dist") },
-        { from: "background.js", to: path.resolve(__dirname, "dist") },
-        { from: "content.js", to: path.resolve(__dirname, "dist") },
-        { from: "icon.png", to: path.resolve(__dirname, "dist") },
+        { from: "images", to: path.resolve(__dirname, "dist") },
       ],
     }),
   ],
