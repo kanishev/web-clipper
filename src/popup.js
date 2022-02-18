@@ -21,6 +21,7 @@ chrome.runtime.onMessageExternal.addListener(function (request) {
 });
 
 chrome.storage.local.get("token").then(({ token }) => {
+  console.log(token);
   toggleDisplayContent(token);
 });
 

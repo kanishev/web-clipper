@@ -32,6 +32,8 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
       );
     });
     sendResponse("status has been received");
+  } else if (request == "getToken") {
+    sendResponse(token);
   }
 });
 

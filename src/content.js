@@ -1,15 +1,10 @@
 // let proxyUrl = "https://cors-anywhere.herokuapp.com/";
 
 let pinner = null;
-let token = null;
 
 chrome.runtime.onMessage.addListener(function (message) {
   if (message.pinnerStatus) {
     togglePinner(message.pinnerStatus);
-  }
-
-  if (message.token) {
-    token = message.token;
   }
 
   if (message.target && message.target.mediaType == "image") {
@@ -107,16 +102,17 @@ pinner.style =
 document.body.append(pinner);
 
 function createPostData() {
-  console.dir(selectedElement);
-  const postData = {
-    data: [],
-  };
-  const item = {};
-  postData.token = token;
-  item.type = "html";
-  item.html = selectedElement.outerHTML;
-  item.text = selectedElement.innerText;
+  chrome.runtime.sendMessage("getToken", function (token) {
+    const postData = {
+      data: [],
+    };
+    const item = {};
+    postData.token = token;
+    item.type = "html";
+    item.html = selectedElement.outerHTML;
+    item.text = selectedElement.innerText;
 
-  postData.data.push(item);
-  setPostData(postData);
+    postData.data.push(item);
+    setPostData(postData);
+  });
 }
