@@ -21,7 +21,7 @@ export function setPinnerCoords(selection, type) {
 }
 
 export function togglePinner({ status, type }) {
-  if (status == "on") {
+  if (status) {
     pinner.style.display = "block";
   } else {
     pinner.style.display = "none";
