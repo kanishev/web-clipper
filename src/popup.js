@@ -37,7 +37,12 @@ function toggleDisplayContent(token) {
 
 function sendPinnerStatus(status, type) {
   chrome.runtime.sendMessage(
-    { pinnerStatus: { status: status ? "on" : "off", type } },
+    {
+      pinnerStatus: {
+        status,
+        type,
+      },
+    },
     function (response) {
       console.log(response);
     }
