@@ -4,10 +4,24 @@ import { setPinnerCoords, togglePinner, createPostData } from "./pinner";
 import { getBase64Image, setPostData } from "./utils";
 
 let selectedElement = null;
+chrome.runtime.sendMessage("getPinnerStatus");
 
 chrome.runtime.onMessage.addListener(function (message) {
   if (message.pinnerStatus) {
+    let { text, image } = message.pinnerStatus;
     togglePinner(message.pinnerStatus);
+
+    if (image) {
+      document.addEventListener("mousemove", showImagePinner);
+    } else {
+      document.removeEventListener("mousemove", showImagePinner);
+    }
+
+    if (text) {
+      document.addEventListener("selectionchange", showTextPinner);
+    } else {
+      document.removeEventListener("selectionchange", showTextPinner);
+    }
   }
 
   if (message.target && message.target.mediaType == "image") {
@@ -39,15 +53,7 @@ chrome.runtime.onMessage.addListener(function (message) {
   }
 });
 
-// function setPostData(content) {
-//   console.log(content);
-//   alert.style.display = "flex";
-//   setTimeout(() => {
-//     alert.style.display = "none";
-//   }, 3000);
-// }
-
-document.onselectionchange = function () {
+function showTextPinner() {
   const selection = document.getSelection();
 
   if (!selection.isCollapsed) {
@@ -69,11 +75,11 @@ document.onselectionchange = function () {
     });
   }
   setPinnerCoords(selection, "HTML");
-};
+}
 
-document.onmousemove = function (e) {
+function showImagePinner(e) {
   if (e.target.nodeName == "IMG") {
     selectedElement = e.target;
     setPinnerCoords(e, "IMAGE");
   }
-};
+}

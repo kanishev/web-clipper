@@ -1,4 +1,5 @@
 let token = "";
+
 let contextMenu = {
   id: "Weje",
   title: "Weje Clipper",
@@ -19,6 +20,15 @@ chrome.contextMenus.onClicked.addListener(function (target) {
 });
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  if (request == "getPinnerStatus") {
+    chrome.storage.local.get().then(({ pinnerStatus }) => {
+      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, {
+          pinnerStatus: pinnerStatus,
+        });
+      });
+    });
+  }
   if (request.pinnerStatus) {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
       chrome.tabs.sendMessage(tabs[0].id, {
@@ -46,7 +56,6 @@ chrome.runtime.onMessageExternal.addListener(function (
       chrome.contextMenus.create(contextMenu);
       token = request.token;
       chrome.storage.local.set({ token });
-      sendResponse({ message: "Token has been recievedd" });
     }
   }
   return true;

@@ -6,12 +6,21 @@ const pinnersBlock = document.getElementById("pinners");
 const textPinner = document.getElementById("textPinner");
 const imagePinner = document.getElementById("imagePinner");
 
+let pinnerStatus = {
+  text: false,
+  image: false,
+};
+
 textPinner.addEventListener("change", function (e) {
-  sendPinnerStatus(this.checked, "text");
+  pinnerStatus.text = this.checked;
+  chrome.storage.local.set({ pinnerStatus });
+  sendPinnerStatus();
 });
 
 imagePinner.addEventListener("change", function (e) {
-  sendPinnerStatus(this.checked, "image");
+  pinnerStatus.image = this.checked;
+  chrome.storage.local.set({ pinnerStatus });
+  sendPinnerStatus();
 });
 
 chrome.runtime.onMessageExternal.addListener(function (request) {
@@ -20,9 +29,17 @@ chrome.runtime.onMessageExternal.addListener(function (request) {
   }
 });
 
-chrome.storage.local.get("token").then(({ token }) => {
-  console.log(token);
-  toggleDisplayContent(token);
+chrome.storage.local.get().then((store) => {
+  imagePinner.checked = store.pinnerStatus
+    ? store.pinnerStatus.image
+    : pinnerStatus.image;
+  textPinner.checked = store.pinnerStatus
+    ? store.pinnerStatus.text
+    : pinnerStatus.text;
+
+  pinnerStatus = store.pinnerStatus;
+  sendPinnerStatus();
+  toggleDisplayContent(store.token);
 });
 
 function toggleDisplayContent(token) {
@@ -35,16 +52,6 @@ function toggleDisplayContent(token) {
   }
 }
 
-function sendPinnerStatus(status, type) {
-  chrome.runtime.sendMessage(
-    {
-      pinnerStatus: {
-        status,
-        type,
-      },
-    },
-    function (response) {
-      console.log(response);
-    }
-  );
+function sendPinnerStatus() {
+  chrome.runtime.sendMessage({ pinnerStatus });
 }
