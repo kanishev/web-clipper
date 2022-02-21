@@ -1,3 +1,5 @@
+import alert from "./alert";
+
 export function getBase64Image(url, callback) {
   var xhr = new XMLHttpRequest();
   xhr.onload = function () {
@@ -15,9 +17,8 @@ export function getBase64Image(url, callback) {
 export function setPostData(content) {
   console.log("ccc", content);
 
-  console.log(chrome);
-  // alert.style.display = "flex";
-  // setTimeout(() => {
-  //   alert.style.display = "none";
-  // }, 3000);
+  alert.style.display = "block";
+  setTimeout(() => {
+    alert.style.display = "none";
+  }, 3000);
 }

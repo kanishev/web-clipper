@@ -1,7 +1,7 @@
 import { getBase64Image, setPostData } from "./utils";
 
-let pinner = document.createElement("div");
-pinner.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="32px" height="32px" viewBox="0 0 32 32">
+export const pinner = document.createElement("div");
+pinner.innerHTML = `<svg id="wejePinner" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="32px" height="32px" viewBox="0 0 32 32">
 <defs>
 <image id="image14" width="32" height="32" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmJLR0QA/wD/AP+gvaeTAAACNUlEQVRYhc2XsW7UQBCG/xnfcdkTxdV5B6p0iDoSDS2PgMQDUPAAvEHEa1CmjhSloqCAOpSIk+4aWMFlPRTn9Y3Hu7ZPbKKMZHltj+f7d/bO/k0YDmo2AKjUmNLpELUPaizp9HwhDa/UeCjfColbGBKRKjgGjtdSEWGThaQEcAY+ywjSoYF3GRG1vmFmCuiZszo3A/B3tVq5DLgzoe126wE8USKoAVcwXbCtjbAW7px7SUTvAZyNwHUIgM8i8sF7f6mAdSOqFRHXUq87x+PlcvmOiD4COD0CHuudEtHr+Xz+Z7fb3ZhrvQ7omRP2Mz8joivk13tqiIg8995/wWHmbSf0Otv//JsC8Fj7LfrdJuAwY3sDE9GzAvB9wX2tJCt2QD/lKgAkIielBIiIQ/f50Y61Kr0v0Xobum67Z3vinuBZEZzPfZh4lALuewlGBTxopARkzUOB6NV+lB2IUbIT2VpsEtrXJDP/LEVn5h+2fsuxJ2KSiFyWEgAgeoIeK3ZAe7kAQBaLxQWA7wXgt865C/SdcgD6HWjf15vNBiGEcwDf/gP+NYRwvl6vGXsPoBkAINaQaC84b8a/nXOvmPmFiCynUInoV13X1977TwCeNvBdczkKubMCepYsIUrnpcJa7w4MBzfU5uVMqbXjjOPelNZ66XMdU5pyQykR9kNF58fiFq5/2El4SoAWMfRlNBRHfRnl1jLe3LHQE+ApMHLwsYLWPlXmeAgeofp48sfpFDFjMQjV8Q/pntMjg/X+WwAAAABJRU5ErkJggg=="/>
 </defs>
@@ -17,8 +17,15 @@ pinner.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://
 
 pinner.classList.add("my-class");
 pinner.id = "wejePinner";
-pinner.style =
-  "position: absolute;top: -50px;left: 10px; z-index: 10000;cursor: pointer; display:none";
+pinner.style = `position: absolute;
+top: -50px;
+left: 10px;
+z-index: 10000;
+cursor: pointer;
+display:none;
+width: 32px;
+height:32px;`;
+
 document.body.append(pinner);
 
 export function setPinnerCoords(selection, type) {
@@ -42,8 +49,8 @@ export function togglePinner({ text, image }) {
   }
 }
 
-export function createPostData(node, selectedElement, token) {
-  if (node.nodeName == "IMG") {
+export function createPostData(selectedElement, token) {
+  if (selectedElement.nodeName == "IMG") {
     getBase64Image(selectedElement.src, (path) => {
       const postData = {
         data: [],
@@ -68,6 +75,7 @@ export function createPostData(node, selectedElement, token) {
     item.text = selectedElement.innerText;
 
     postData.data.push(item);
+    console.log(item);
     setPostData(postData);
   }
 }

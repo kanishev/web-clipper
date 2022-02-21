@@ -1,4 +1,9 @@
-import { setPinnerCoords, togglePinner, createPostData } from "./pinner";
+import {
+  setPinnerCoords,
+  togglePinner,
+  createPostData,
+  pinner,
+} from "./pinner";
 import { getBase64Image, setPostData } from "./utils";
 import "./alert";
 
@@ -11,12 +16,17 @@ chrome.runtime.onMessage.addListener(function (message) {
     togglePinner(message.pinnerStatus);
 
     if (image) {
+      console.log(true);
       document.addEventListener("mousemove", showImagePinner);
-    } else if (text) {
+    } else {
+      console.log(false);
+      document.removeEventListener("mousemove", showImagePinner);
+    }
+
+    if (text) {
       document.addEventListener("selectionchange", showTextPinner);
     } else {
       document.removeEventListener("selectionchange", showTextPinner);
-      document.removeEventListener("mousemove", showImagePinner);
     }
   }
 
@@ -63,15 +73,17 @@ function showTextPinner() {
     for (let c = 0; c < selectedElement.children.length; c++) {
       selectedElement.children[c].removeAttribute("class");
     }
-  }
 
-  if (selection.anchorNode.id == "wejePinner") {
-    chrome.runtime.sendMessage("getToken", function (token) {
-      createPostData(selectedElement, selectedElement, token);
-    });
+    setPinnerCoords(selection, "HTML");
   }
-  setPinnerCoords(selection, "HTML");
 }
+
+pinner.onclick = function () {
+  console.log("ss");
+  chrome.runtime.sendMessage("getToken", function (token) {
+    createPostData(selectedElement, token);
+  });
+};
 
 function showImagePinner(e) {
   if (e.target.nodeName == "IMG") {

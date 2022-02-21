@@ -10,15 +10,28 @@ const svg = `
 `;
 
 alert.id = "wejeAlert";
-alert.style =
-  "display:block;z-index: 100;width: 220px;height: 60px; border-radius: 20px; position: fixed;top: 17px;left: 50%;color: white; background-color: #4881FF";
 
-content.style =
-  "display: flex;gap: 10px;border-radius: 10px; justify-content: center;align-items: center;";
+alert.style = `display:none;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 17px;
+  margin: auto;
+  z-index: 100;
+  width: 220px;
+  height: 60px;
+  border-radius: 20px;
+  color: white;
+  background-color: #4881FF`;
+
+content.style = `display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;`;
+
 text.innerText = "Content sent";
 content.innerHTML = svg;
 content.append(text);
-
 alert.append(content);
 
 document.body.append(alert);
