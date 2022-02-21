@@ -1,5 +1,6 @@
 import { setPinnerCoords, togglePinner, createPostData } from "./pinner";
 import { getBase64Image, setPostData } from "./utils";
+import "./alert";
 
 let selectedElement = null;
 chrome.runtime.sendMessage("getPinnerStatus");

@@ -1,7 +1,4 @@
-import { getBase64Image, setPostData } from "./utils";
-
-let pinner = document.createElement("div");
-pinner.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="32px" height="32px" viewBox="0 0 32 32">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 32 32">
 <defs>
 <image id="image14" width="32" height="32" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmJLR0QA/wD/AP+gvaeTAAACNUlEQVRYhc2XsW7UQBCG/xnfcdkTxdV5B6p0iDoSDS2PgMQDUPAAvEHEa1CmjhSloqCAOpSIk+4aWMFlPRTn9Y3Hu7ZPbKKMZHltj+f7d/bO/k0YDmo2AKjUmNLpELUPaizp9HwhDa/UeCjfColbGBKRKjgGjtdSEWGThaQEcAY+ywjSoYF3GRG1vmFmCuiZszo3A/B3tVq5DLgzoe126wE8USKoAVcwXbCtjbAW7px7SUTvAZyNwHUIgM8i8sF7f6mAdSOqFRHXUq87x+PlcvmOiD4COD0CHuudEtHr+Xz+Z7fb3ZhrvQ7omRP2Mz8joivk13tqiIg8995/wWHmbSf0Otv//JsC8Fj7LfrdJuAwY3sDE9GzAvB9wX2tJCt2QD/lKgAkIielBIiIQ/f50Y61Kr0v0Xobum67Z3vinuBZEZzPfZh4lALuewlGBTxopARkzUOB6NV+lB2IUbIT2VpsEtrXJDP/LEVn5h+2fsuxJ2KSiFyWEgAgeoIeK3ZAe7kAQBaLxQWA7wXgt865C/SdcgD6HWjf15vNBiGEcwDf/gP+NYRwvl6vGXsPoBkAINaQaC84b8a/nXOvmPmFiCynUInoV13X1977TwCeNvBdczkKubMCepYsIUrnpcJa7w4MBzfU5uVMqbXjjOPelNZ66XMdU5pyQykR9kNF58fiFq5/2El4SoAWMfRlNBRHfRnl1jLe3LHQE+ApMHLwsYLWPlXmeAgeofp48sfpFDFjMQjV8Q/pntMjg/X+WwAAAABJRU5ErkJggg=="/>
 </defs>
@@ -13,61 +10,4 @@ pinner.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://
 <path style=" stroke:none;fill-rule:nonzero;fill:rgb(51.764706%,51.764706%,51.764706%);fill-opacity:1;" d="M 18.660156 12.925781 L 15.171875 15.566406 L 15.171875 14.359375 C 15.171875 14.171875 15.207031 13.984375 15.277344 13.808594 C 15.347656 13.636719 15.453125 13.476562 15.582031 13.34375 C 15.710938 13.210938 15.867188 13.105469 16.035156 13.03125 C 16.207031 12.960938 16.390625 12.925781 16.574219 12.925781 Z M 18.660156 12.925781 "/>
 <path style=" stroke:none;fill-rule:nonzero;fill:rgb(51.764706%,51.764706%,51.764706%);fill-opacity:1;" d="M 16.226562 16.617188 C 16.226562 16.617188 15.660156 16.617188 15.492188 16.617188 C 15.398438 16.621094 15.308594 16.632812 15.21875 16.648438 L 17.351562 18.257812 L 17.351562 16.617188 Z M 16.226562 16.617188 "/>
 </g>
-</svg>`;
-
-pinner.classList.add("my-class");
-pinner.id = "wejePinner";
-pinner.style =
-  "position: absolute;top: -50px;left: 10px; z-index: 10000;cursor: pointer; display:none";
-document.body.append(pinner);
-
-export function setPinnerCoords(selection, type) {
-  if (selection && selection.isCollapsed && type == "HTML") {
-    pinner.style.top = 0;
-    pinner.style.left = 0;
-  } else if (type == "IMAGE") {
-    pinner.style.top = selection.target.offsetTop + 10 + "px";
-    pinner.style.left = selection.target.offsetLeft + 10 + "px";
-  } else {
-    pinner.style.top = selection.anchorNode.parentNode.offsetTop + "px";
-    pinner.style.left = selection.anchorNode.parentNode.offsetLeft - 35 + "px";
-  }
-}
-
-export function togglePinner({ text, image }) {
-  if (text || image) {
-    pinner.style.display = "block";
-  } else {
-    pinner.style.display = "none";
-  }
-}
-
-export function createPostData(node, selectedElement, token) {
-  if (node.nodeName == "IMG") {
-    getBase64Image(selectedElement.src, (path) => {
-      const postData = {
-        data: [],
-      };
-      postData.token = token;
-      const item = {};
-      item.type = "image";
-      item.base64 = path;
-      item.url = selectedElement.src;
-
-      postData.data.push(item);
-      setPostData(postData);
-    });
-  } else {
-    const postData = {
-      data: [],
-    };
-    postData.token = token;
-    const item = {};
-    item.type = "html";
-    item.html = selectedElement.outerHTML;
-    item.text = selectedElement.innerText;
-
-    postData.data.push(item);
-    setPostData(postData);
-  }
-}
+</svg>
