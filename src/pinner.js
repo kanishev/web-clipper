@@ -4,7 +4,7 @@ let pinner = document.createElement("div");
 pinner.classList.add("my-class");
 pinner.id = "wejePinner";
 pinner.style =
-  "position: absolute;top: -20px;left: 10px;width: 20px;height: 20px;background: blue;border-radius:50%; z-index: 10000;cursor: pointer; display:none";
+  "position: absolute;top: -20px;left: 10px;width: 20px;height: 20px;background-image: url('icon16.png'); z-index: 10000;cursor: pointer; display:none";
 document.body.append(pinner);
 
 export function setPinnerCoords(selection, type) {

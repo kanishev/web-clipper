@@ -1,5 +1,3 @@
-// let proxyUrl = "https://cors-anywhere.herokuapp.com/";
-
 import { setPinnerCoords, togglePinner, createPostData } from "./pinner";
 import { getBase64Image, setPostData } from "./utils";
 
@@ -13,14 +11,11 @@ chrome.runtime.onMessage.addListener(function (message) {
 
     if (image) {
       document.addEventListener("mousemove", showImagePinner);
-    } else {
-      document.removeEventListener("mousemove", showImagePinner);
-    }
-
-    if (text) {
+    } else if (text) {
       document.addEventListener("selectionchange", showTextPinner);
     } else {
       document.removeEventListener("selectionchange", showTextPinner);
+      document.removeEventListener("mousemove", showImagePinner);
     }
   }
 
