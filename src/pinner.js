@@ -23,7 +23,7 @@ pinner.style = `
 position: absolute;
 top: -50px;
 left: 10px;
-z-index: 10000;
+z-index: 100;
 cursor: pointer;
 display: none;
 width: 32px;
@@ -33,14 +33,23 @@ document.body.append(pinner);
 
 export function setPinnerCoords(selection, type) {
   if (selection && selection.isCollapsed && type == "HTML") {
-    pinner.style.top = 0;
+    pinner.style.top = -50 + "px";
     pinner.style.left = 0;
   } else if (type == "IMAGE") {
-    pinner.style.top = selection.target.offsetTop + 10 + "px";
-    pinner.style.left = selection.target.offsetLeft + 10 + "px";
+    pinner.style.top =
+      selection.parentNode.getBoundingClientRect().y +
+      window.scrollY +
+      10 +
+      "px";
+    pinner.style.left =
+      selection.parentNode.getBoundingClientRect().x + 10 + "px";
   } else {
-    pinner.style.top = selection.anchorNode.parentNode.offsetTop + "px";
-    pinner.style.left = selection.anchorNode.parentNode.offsetLeft - 35 + "px";
+    pinner.style.top =
+      selection.anchorNode.parentNode.getBoundingClientRect().y +
+      window.scrollY +
+      "px";
+    pinner.style.left =
+      selection.anchorNode.parentNode.getBoundingClientRect().x - 35 + "px";
   }
 }
 
@@ -52,15 +61,16 @@ export function togglePinner({ text, image }) {
   }
 }
 
-export function createPostData(selectedElement, token) {
+export function createPostData(selectedElement, { uid, apiKey }) {
   if (selectedElement.nodeName == "IMG") {
     getBase64Image(selectedElement.src, (path) => {
       const postData = {
         data: [],
       };
-      postData.token = token;
-      postData.url = window.location.href;
       const item = {};
+      postData.uid = uid;
+      postData.apiKey = apiKey;
+      postData.source = window.location.href;
       item.type = "image";
       item.base64 = path;
       item.url = selectedElement.src;
@@ -72,9 +82,11 @@ export function createPostData(selectedElement, token) {
     const postData = {
       data: [],
     };
-    postData.token = token;
-    postData.url = window.location.href;
     const item = {};
+
+    postData.uid = uid;
+    postData.apiKey = apiKey;
+    postData.source = window.location.href;
     item.type = "html";
     item.html = selectedElement.outerHTML;
     item.text = selectedElement.innerText;

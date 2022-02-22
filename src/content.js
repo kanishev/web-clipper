@@ -20,10 +20,8 @@ chrome.runtime.onMessage.addListener(function (message) {
     togglePinner(message.pinnerStatus);
 
     if (image) {
-      console.log(true);
       document.addEventListener("mousemove", showImagePinner);
     } else {
-      console.log(false);
       document.removeEventListener("mousemove", showImagePinner);
     }
 
@@ -35,12 +33,14 @@ chrome.runtime.onMessage.addListener(function (message) {
   }
 
   if (message.target && message.target.mediaType == "image") {
+    let { uid, apiKey } = message.clientData;
     getBase64Image(message.target.srcUrl, (path) => {
       const postData = {
         data: [],
       };
-      postData.token = message.token;
-      postData.url = window.location.href;
+      postData.uid = uid;
+      postData.apiKey = apiKey;
+      postData.source = window.location.href;
       const item = {};
       item.type = "image";
       item.base64 = path;
@@ -50,12 +50,14 @@ chrome.runtime.onMessage.addListener(function (message) {
       setPostData(postData);
     });
   } else if (message.target && message.target.selectionText) {
+    let { uid, apiKey } = message.clientData;
     const postData = {
       data: [],
     };
     const item = {};
-    postData.token = message.token;
-    postData.url = window.location.href;
+    postData.uid = uid;
+    postData.apiKey = apiKey;
+    postData.source = window.location.href;
     item.type = "html";
     item.html = selectedElement.outerHTML;
     item.text = selectedElement.innerText;
@@ -85,14 +87,14 @@ function showTextPinner(e) {
 }
 
 pinner.onclick = function () {
-  chrome.runtime.sendMessage("getToken", function (token) {
-    createPostData(selectedElement, token);
+  chrome.runtime.sendMessage("getToken", function (clientData) {
+    createPostData(selectedElement, clientData);
   });
 };
 
 function showImagePinner(e) {
   if (e.target.nodeName == "IMG") {
     selectedElement = e.target;
-    setPinnerCoords(e, "IMAGE");
+    setPinnerCoords(e.target, "IMAGE");
   }
 }

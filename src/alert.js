@@ -11,23 +11,25 @@ const svg = `
 
 alert.id = "wejeAlert";
 
-alert.style = `display:none;
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 17px;
-  margin: auto;
-  z-index: 100;
-  width: 220px;
-  height: 60px;
-  border-radius: 20px;
-  color: white;
-  background-color: #4881FF`;
+alert.style = `display: none !important;
+  position: fixed !important;
+  left: 0 !important;
+  right: 0 !important;
+  top: 17px !important;
+  margin: auto !important;
+  z-index: 100 !important;
+  width: 220px !important;
+  font-size: 15px !important;
+  height: 60px !important;
+  justify-content: center !important;
+  border-radius: 20px !important;
+  color: white !important;
+  background-color: #4881FF !important`;
 
-content.style = `display: flex;
-  gap: 10px;
-  justify-content: center;
-  align-items: center;`;
+content.style = `display: flex !important;
+  gap: 10px !important;
+  justify-content: center !important;
+  align-items: center !important;`;
 
 text.innerText = "Content sent";
 content.innerHTML = svg;

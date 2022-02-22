@@ -14,21 +14,24 @@ let pinnerStatus = {
   image: false,
 };
 
-textPinner.addEventListener("change", function (e) {
+textPinner.addEventListener("change", function () {
+  console.log("s");
+  console.log(pinnerStatus);
   pinnerStatus.text = this.checked;
   chrome.storage.local.set({ pinnerStatus });
   sendPinnerStatus();
+  console.log("s2");
 });
 
-imagePinner.addEventListener("change", function (e) {
+imagePinner.addEventListener("change", function () {
   pinnerStatus.image = this.checked;
   chrome.storage.local.set({ pinnerStatus });
   sendPinnerStatus();
 });
 
 chrome.runtime.onMessageExternal.addListener(function (request) {
-  if (request && request.token) {
-    toggleDisplayContent(token);
+  if (request && request.apiKey && request.uid) {
+    toggleDisplayContent({ apiKey: request.apiKey, uid: request.uid });
   }
 });
 
@@ -40,9 +43,14 @@ chrome.storage.local.get().then((store) => {
     ? store.pinnerStatus.text
     : pinnerStatus.text;
 
-  pinnerStatus = store.pinnerStatus;
+  pinnerStatus = store.pinnerStatus
+    ? store.pinnerStatus
+    : {
+        text: false,
+        image: false,
+      };
   sendPinnerStatus();
-  toggleDisplayContent(store.token);
+  toggleDisplayContent(store.clientData);
 });
 
 function toggleDisplayContent(token) {
@@ -60,6 +68,7 @@ function sendPinnerStatus() {
 }
 
 version.innerText = `Version: ${chrome.runtime.getManifest().version}`;
+
 copyButton.onclick = function () {
   chrome.runtime.sendMessage("getCurrentUrl");
 };
