@@ -6,6 +6,9 @@ const pinnersBlock = document.getElementById("pinners");
 const textPinner = document.getElementById("textPinner");
 const imagePinner = document.getElementById("imagePinner");
 
+const version = document.getElementById("version");
+const copyButton = document.getElementById("copyButton");
+
 let pinnerStatus = {
   text: false,
   image: false,
@@ -55,3 +58,8 @@ function toggleDisplayContent(token) {
 function sendPinnerStatus() {
   chrome.runtime.sendMessage({ pinnerStatus });
 }
+
+version.innerText = `Version: ${chrome.runtime.getManifest().version}`;
+copyButton.onclick = function () {
+  chrome.runtime.sendMessage("getCurrentUrl");
+};

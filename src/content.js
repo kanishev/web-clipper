@@ -11,6 +11,10 @@ let selectedElement = null;
 chrome.runtime.sendMessage("getPinnerStatus");
 
 chrome.runtime.onMessage.addListener(function (message) {
+  if (message == "getCurrentUrl") {
+    console.log(window.location.href);
+  }
+
   if (message.pinnerStatus) {
     let { text, image } = message.pinnerStatus;
     togglePinner(message.pinnerStatus);
@@ -36,6 +40,7 @@ chrome.runtime.onMessage.addListener(function (message) {
         data: [],
       };
       postData.token = message.token;
+      postData.url = window.location.href;
       const item = {};
       item.type = "image";
       item.base64 = path;
@@ -50,6 +55,7 @@ chrome.runtime.onMessage.addListener(function (message) {
     };
     const item = {};
     postData.token = message.token;
+    postData.url = window.location.href;
     item.type = "html";
     item.html = selectedElement.outerHTML;
     item.text = selectedElement.innerText;
@@ -59,7 +65,7 @@ chrome.runtime.onMessage.addListener(function (message) {
   }
 });
 
-function showTextPinner() {
+function showTextPinner(e) {
   const selection = document.getSelection();
 
   if (!selection.isCollapsed) {
@@ -79,7 +85,6 @@ function showTextPinner() {
 }
 
 pinner.onclick = function () {
-  console.log("ss");
   chrome.runtime.sendMessage("getToken", function (token) {
     createPostData(selectedElement, token);
   });

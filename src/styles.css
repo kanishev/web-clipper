@@ -44,7 +44,7 @@ h3 {
   cursor: pointer;
 }
 
-.version {
+#version {
   font-size: 12px;
   line-height: 18px;
   margin-top: 25px;
