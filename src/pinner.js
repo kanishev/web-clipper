@@ -17,7 +17,6 @@ pinner.innerHTML = `
 </svg>
 `;
 
-pinner.classList.add("my-class");
 pinner.id = "wejePinner";
 pinner.style = `
 position: absolute;

@@ -15,7 +15,8 @@ export function getBase64Image(url, callback) {
 }
 
 export function setPostData(content) {
-  console.log(content);
+  chrome.runtime.sendMessage({ content });
+
   alert.style.display = "flex";
   setTimeout(() => {
     alert.style.display = "none";

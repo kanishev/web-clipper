@@ -15,12 +15,9 @@ let pinnerStatus = {
 };
 
 textPinner.addEventListener("change", function () {
-  console.log("s");
-  console.log(pinnerStatus);
   pinnerStatus.text = this.checked;
   chrome.storage.local.set({ pinnerStatus });
   sendPinnerStatus();
-  console.log("s2");
 });
 
 imagePinner.addEventListener("change", function () {
@@ -43,12 +40,13 @@ chrome.storage.local.get().then((store) => {
     ? store.pinnerStatus.text
     : pinnerStatus.text;
 
-  pinnerStatus = store.pinnerStatus
-    ? store.pinnerStatus
-    : {
-        text: false,
-        image: false,
-      };
+  pinnerStatus =
+    store.pinnerStatus && store.clientData
+      ? store.pinnerStatus
+      : {
+          text: false,
+          image: false,
+        };
   sendPinnerStatus();
   toggleDisplayContent(store.clientData);
 });

@@ -87,7 +87,7 @@ function showTextPinner(e) {
 }
 
 pinner.onclick = function () {
-  chrome.runtime.sendMessage("getToken", function (clientData) {
+  chrome.runtime.sendMessage("getClientData", function (clientData) {
     createPostData(selectedElement, clientData);
   });
 };
