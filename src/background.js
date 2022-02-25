@@ -24,7 +24,6 @@ chrome.contextMenus.onClicked.addListener(function (target) {
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.content) {
-    console.log(request.content);
     fetch("https://clipper.stage.weje.io/push", {
       method: "POST",
       headers: {
@@ -32,10 +31,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
       },
       body: JSON.stringify(request.content),
     })
-      .then((data) => {
-        console.log("Success:", data);
-      })
-      .catch((error) => {
+      .catch(function(error) {
         console.error("Error:", error);
       });
   }
