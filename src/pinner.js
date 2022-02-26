@@ -37,10 +37,7 @@ export function setPinnerCoords(selection, type) {
 
   if (selection && type == "IMAGE" && selection.width > 100) {
     pinner.style.top =
-      selection.parentNode.getBoundingClientRect().y +
-      window.scrollY +
-      10 +
-      "px";
+      selection.getBoundingClientRect().y + window.scrollY + 10 + "px";
     pinner.style.left =
       selection.parentNode.getBoundingClientRect().x + 10 + "px";
   } else if (selection && type == "HTML") {
@@ -50,7 +47,9 @@ export function setPinnerCoords(selection, type) {
         window.scrollY +
         "px";
       pinner.style.left =
-        selection.getRangeAt(0).getBoundingClientRect().x - 35 + "px";
+        selection.getRangeAt(0).getBoundingClientRect().x <= 20
+          ? 0
+          : selection.getRangeAt(0).getBoundingClientRect().x - 35 + "px";
       console.log(interval);
     }, 1000);
   }
