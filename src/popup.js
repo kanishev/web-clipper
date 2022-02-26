@@ -70,3 +70,5 @@ version.innerText = `Version: ${chrome.runtime.getManifest().version}`;
 copyButton.onclick = function () {
   chrome.runtime.sendMessage("getCurrentUrl");
 };
+
+

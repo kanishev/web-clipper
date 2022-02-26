@@ -64,6 +64,27 @@ chrome.runtime.onMessage.addListener(function (message) {
 
     postData.data.push(item);
     setPostData(postData);
+  } else if (message.target && message.target.linkUrl) {
+    const postData = {
+      data: [],
+    };
+    const item = {};
+    const url = message.target.linkUrl;
+    const link = document.createElement("a");
+    link.href = url;
+    link.innerText = url;
+    link.setAttribute("target", "_blank");
+
+    postData.uid = message.clientData.uid;
+    postData.apiKey = message.clientData.apiKey;
+    postData.source = url;
+
+    item.type = "html";
+    item.html = link.outerHTML;
+    item.text = url;
+
+    postData.data.push(item);
+    setPostData(postData);
   }
 });
 

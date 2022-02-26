@@ -6,7 +6,7 @@ let clientData = {
 let contextMenu = {
   id: "Weje",
   title: "Weje Clipper",
-  contexts: ["image", "selection"],
+  contexts: ["all"],
 };
 
 chrome.storage.local.get().then(function (storage) {
@@ -30,14 +30,16 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(request.content),
-    })
-      .catch(function(error) {
-        console.error("Error:", error);
-      });
+    }).catch(function (error) {
+      console.error("Error:", error);
+    });
   }
   if (request == "getCurrentUrl") {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      chrome.tabs.sendMessage(tabs[0].id, "getCurrentUrl");
+      chrome.tabs.sendMessage(tabs[0].id, {
+        target: "currentUrl",
+        clientData,
+      });
     });
   }
 
