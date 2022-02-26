@@ -47,6 +47,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     chrome.storage.local.get().then((store) => {
       chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         chrome.tabs.sendMessage(tabs[0].id, {
+          clientData,
           pinnerStatus: store.clientData
             ? store.pinnerStatus
             : { text: false, image: false },
@@ -59,12 +60,9 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
       chrome.tabs.sendMessage(tabs[0].id, {
         pinnerStatus: request.pinnerStatus,
+        clientData,
       });
     });
-  }
-
-  if (request == "getClientData") {
-    sendResponse(clientData);
   }
 });
 

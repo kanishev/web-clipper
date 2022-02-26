@@ -8,11 +8,17 @@ import { getBase64Image, setPostData } from "./utils";
 import "./alert";
 
 let selectedElement = null;
+let clientData = null;
+
 chrome.runtime.sendMessage("getPinnerStatus");
 
 chrome.runtime.onMessage.addListener(function (message) {
   if (message == "getCurrentUrl") {
     console.log(window.location.href);
+  }
+
+  if (message.clientData) {
+    clientData = message.clientData;
   }
 
   if (message.pinnerStatus) {
@@ -104,18 +110,25 @@ function showTextPinner(e) {
     }
 
     setPinnerCoords(selection, "HTML");
+  } else {
+    setPinnerCoords(null, "EMPTY");
   }
 }
 
-pinner.onclick = function () {
-  chrome.runtime.sendMessage("getClientData", function (clientData) {
-    createPostData(selectedElement, clientData);
-  });
+pinner.onmousedown = function () {
+  createPostData(selectedElement, clientData);
+  setPinnerCoords(null, "EMPTY");
 };
 
 function showImagePinner(e) {
   if (e.target.nodeName == "IMG") {
     selectedElement = e.target;
     setPinnerCoords(e.target, "IMAGE");
+  } else if (
+    !e.target.classList.contains("clipper") &&
+    selectedElement &&
+    selectedElement.nodeName == "IMG"
+  ) {
+    setPinnerCoords(null, "EMPTY");
   }
 }
