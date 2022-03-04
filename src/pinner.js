@@ -1,46 +1,29 @@
-import { getBase64Image, setPostData } from "./utils";
-
 export const pinner = document.createElement("div");
-pinner.innerHTML = `
-<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none">
-  <rect class="clipper" width="100%" height="100%" x="0" y="0" rx="3" fill="#000000" stroke="none"  fill-opacity="1"/>
-  <g>
-    <path class="clipper" d="M13.0872 17V17.75C13.418 17.75 13.7098 17.5332 13.8053 17.2164L13.0872 17ZM9.10444 17L8.39843 17.2531C8.50528 17.5512 8.78781 17.75 9.10444 17.75V17ZM8.47708 15.25L9.18308 14.9969L9.09342 14.7468L8.86629 14.6089L8.47708 15.25ZM13.6146 15.25L13.2204 14.612L12.9786 14.7614L12.8965 15.0336L13.6146 15.25ZM13.0872 16.25H9.10444V17.75H13.0872V16.25ZM9.81044 16.7469L9.18308 14.9969L7.77107 15.5031L8.39843 17.2531L9.81044 16.7469ZM8.86629 14.6089C6.27568 13.0361 5.39551 10.3025 5.87445 7.96291C6.35102 5.63486 8.1508 3.75 10.9798 3.75V2.25C7.33717 2.25 5.00307 4.74014 4.40493 7.66209C3.80915 10.5725 4.91341 13.9639 8.08786 15.8911L8.86629 14.6089ZM10.9798 3.75C13.8092 3.75 15.619 5.63604 16.1147 7.9684C16.6129 10.3129 15.7587 13.0436 13.2204 14.612L14.0089 15.888C17.1352 13.9564 18.1994 10.5621 17.5819 7.6566C16.9619 4.73896 14.6219 2.25 10.9798 2.25V3.75ZM12.8965 15.0336L12.3691 16.7836L13.8053 17.2164L14.3327 15.4664L12.8965 15.0336Z" fill="white" id="svg_1" class="selected" transform="rotate(-1.0592834949493408 10.999971389770803,10.000000000000004) "/>
-    <path class="clipper" d="M10 20H12" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" id="svg_2" />
-  </g>
-</svg>
-`;
-
+pinner.innerHTML =
+  '<svg class="clipper" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"> <rect class="clipper" width="22" height="22" rx="5" fill="black"/> <path class="clipper" d="M12.7393 15V15.75C13.0656 15.75 13.3544 15.5391 13.4537 15.2284L12.7393 15ZM9.42036 15L8.71933 15.2665C8.82999 15.5576 9.10898 15.75 9.42036 15.75V15ZM8.89757 13.625L9.5986 13.3585L9.50318 13.1075L9.27015 12.9741L8.89757 13.625ZM13.1789 13.625L12.8013 12.9769L12.5523 13.1221L12.4645 13.3966L13.1789 13.625ZM12.7393 14.25H9.42036V15.75H12.7393V14.25ZM10.1214 14.7335L9.5986 13.3585L8.19653 13.8915L8.71933 15.2665L10.1214 14.7335ZM9.27015 12.9741C7.1587 11.7655 6.46928 9.69082 6.84933 7.94038C7.22695 6.20112 8.66121 4.75 10.9831 4.75V3.25C7.9121 3.25 5.90146 5.23638 5.38348 7.62212C4.86793 9.99668 5.83221 12.7345 8.52498 14.2759L9.27015 12.9741ZM10.9831 4.75C13.3053 4.75 14.7488 6.20208 15.1419 7.94616C15.5377 9.70185 14.868 11.773 12.8013 12.9769L13.5564 14.2731C16.2103 12.727 17.1393 9.98565 16.6052 7.61634C16.0686 5.23542 14.054 3.25 10.9831 3.25V4.75ZM12.4645 13.3966L12.0249 14.7716L13.4537 15.2284L13.8933 13.8534L12.4645 13.3966Z" fill="white"/> <path class="clipper" d="M10 18H12" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>';
 pinner.id = "wejePinner";
-pinner.style = `
-position: absolute;
-top: -50px;
-left: 10px;
-z-index: 99999;
-cursor: pointer;
-display: none;
-width: 22px;
-height: 22px;`;
-
-document.body.append(pinner);
+pinner.classList.add("clipper");
+pinner.style =
+  "position: absolute; top: -50px; left: 10px; z-index: 9999999; cursor: pointer; display: none; width: 32px; height: 32px;";
 
 let interval = null;
 
 export function setPinnerCoords(selection, type) {
   clearInterval(interval);
-
-  if (!selection && type == "EMPTY") {
-    console.log("collapsed");
+  if (!selection && type === "EMPTY") {
     pinner.style.top = -50 + "px";
     pinner.style.left = 0;
-  }
-
-  if (selection && type == "IMAGE" && selection.width > 100) {
+  } else if (selection && type === "IMAGE" && selection.width > 100) {
     pinner.style.top =
       selection.getBoundingClientRect().y + window.scrollY + 10 + "px";
+    pinner.style.left = selection.getBoundingClientRect().x + 10 + "px";
+  } else {
+    pinner.style.top =
+      selection.getRangeAt(0).getBoundingClientRect().y + window.scrollY + "px";
     pinner.style.left =
-      selection.parentNode.getBoundingClientRect().x + 10 + "px";
-  } else if (selection && type == "HTML") {
+      selection.getRangeAt(0).getBoundingClientRect().x <= 20
+        ? 5
+        : selection.getRangeAt(0).getBoundingClientRect().x - 35 + "px";
     interval = setInterval(function () {
       pinner.style.top =
         selection.getRangeAt(0).getBoundingClientRect().y +
@@ -48,52 +31,18 @@ export function setPinnerCoords(selection, type) {
         "px";
       pinner.style.left =
         selection.getRangeAt(0).getBoundingClientRect().x <= 20
-          ? 0
+          ? 5
           : selection.getRangeAt(0).getBoundingClientRect().x - 35 + "px";
-      console.log(interval);
-    }, 1000);
+    }, 500);
   }
 }
 
-export function togglePinner({ text, image }) {
-  if (text || image) {
+export function togglePinner(pinnerStatus) {
+  if (pinnerStatus.text || pinnerStatus.image) {
     pinner.style.display = "block";
   } else {
     pinner.style.display = "none";
   }
 }
 
-export function createPostData(selectedElement, { uid, apiKey }) {
-  if (selectedElement.nodeName == "IMG") {
-    getBase64Image(selectedElement.src, (path) => {
-      const postData = {
-        data: [],
-      };
-      const item = {};
-      postData.uid = uid;
-      postData.apiKey = apiKey;
-      postData.source = window.location.href;
-      item.type = "image";
-      item.base64 = path;
-      item.url = selectedElement.src;
-
-      postData.data.push(item);
-      setPostData(postData);
-    });
-  } else {
-    const postData = {
-      data: [],
-    };
-    const item = {};
-
-    postData.uid = uid;
-    postData.apiKey = apiKey;
-    postData.source = window.location.href;
-    item.type = "html";
-    item.html = selectedElement.outerHTML;
-    item.text = selectedElement.innerText;
-
-    postData.data.push(item);
-    setPostData(postData);
-  }
-}
+document.body.append(pinner);
