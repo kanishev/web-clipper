@@ -1,134 +1,118 @@
-import {
-  setPinnerCoords,
-  togglePinner,
-  createPostData,
-  pinner,
-} from "./pinner";
-import { getBase64Image, setPostData } from "./utils";
-import "./alert";
+import { pinner, setPinnerCoords, togglePinner } from "./pinner.js";
+import { createPostData, findImageNode } from "./utils.js";
+import "./alert.js";
 
 let selectedElement = null;
+let selection = null;
 let clientData = null;
-
+let isImageFound = false;
 chrome.runtime.sendMessage("getPinnerStatus");
 
 chrome.runtime.onMessage.addListener(function (message) {
-  if (message == "getCurrentUrl") {
-    console.log(window.location.href);
-  }
-
+  var node, pinnerStatus;
   if (message.clientData) {
     clientData = message.clientData;
   }
-
   if (message.pinnerStatus) {
-    let { text, image } = message.pinnerStatus;
+    pinnerStatus = message.pinnerStatus;
     togglePinner(message.pinnerStatus);
-
-    if (image) {
+    document.onmouseup = function () {
+      if (selectedElement) {
+        return Array.from(selectedElement.children).forEach(function (el) {
+          if (el.querySelector("img")) {
+            isImageFound = true;
+          }
+        });
+      }
+    };
+    if (pinnerStatus.image) {
       document.addEventListener("mousemove", showImagePinner);
     } else {
       document.removeEventListener("mousemove", showImagePinner);
     }
-
-    if (text) {
+    if (pinnerStatus.text) {
       document.addEventListener("selectionchange", showTextPinner);
     } else {
       document.removeEventListener("selectionchange", showTextPinner);
     }
   }
-
-  if (message.target && message.target.mediaType == "image") {
-    let { uid, apiKey } = message.clientData;
-    getBase64Image(message.target.srcUrl, (path) => {
-      const postData = {
-        data: [],
-      };
-      postData.uid = uid;
-      postData.apiKey = apiKey;
-      postData.source = window.location.href;
-      const item = {};
-      item.type = "image";
-      item.base64 = path;
-      item.url = message.target.srcUrl;
-
-      postData.data.push(item);
-      setPostData(postData);
-    });
-  } else if (message.target && message.target.selectionText) {
-    let { uid, apiKey } = message.clientData;
-    const postData = {
-      data: [],
-    };
-    const item = {};
-    postData.uid = uid;
-    postData.apiKey = apiKey;
-    postData.source = window.location.href;
-    item.type = "html";
-    item.html = selectedElement.outerHTML;
-    item.text = selectedElement.innerText;
-
-    postData.data.push(item);
-    setPostData(postData);
-  } else if (message.target && message.target.linkUrl) {
-    const postData = {
-      data: [],
-    };
-    const item = {};
-    const url = message.target.linkUrl;
-    const link = document.createElement("a");
-    link.href = url;
-    link.innerText = url;
-    link.setAttribute("target", "_blank");
-
-    postData.uid = message.clientData.uid;
-    postData.apiKey = message.clientData.apiKey;
-    postData.source = url;
-
-    item.type = "html";
-    item.html = link.outerHTML;
-    item.text = url;
-
-    postData.data.push(item);
-    setPostData(postData);
+  if (message.target && message.target.linkUrl) {
+    node = message.target;
+    createPostData(clientData, [node]);
+    return;
+  }
+  if (message.target) {
+    node = message.target;
+    if (!findImageNode(selectedElement, clientData)) {
+      if (node && node.mediaType === "image") {
+        createPostData(clientData, [node]);
+      } else if (node && node.selectionText) {
+        createPostData(clientData, [selectedElement]);
+      }
+    }
   }
 });
 
-function showTextPinner(e) {
-  const selection = document.getSelection();
-
+function showTextPinner () {
+  var c, i;
+  selection = document.getSelection();
   if (!selection.isCollapsed) {
     selectedElement = document.createElement("div");
-
-    for (let i = 0; i < selection.rangeCount; i++) {
+    i = 0;
+    while (i < selection.rangeCount) {
       selectedElement.append(selection.getRangeAt(i).cloneContents());
-      selection.getRangeAt(i).cloneContents();
+      i++;
     }
-
-    for (let c = 0; c < selectedElement.children.length; c++) {
+    c = 0;
+    while (c < selectedElement.children.length) {
       selectedElement.children[c].removeAttribute("class");
+      c++;
     }
-
     setPinnerCoords(selection, "HTML");
   } else {
     setPinnerCoords(null, "EMPTY");
+    selectedElement = null;
+    selection = null;
+    isImageFound = false;
   }
-}
-
-pinner.onmousedown = function () {
-  createPostData(selectedElement, clientData);
-  setPinnerCoords(null, "EMPTY");
 };
 
-function showImagePinner(e) {
-  if (e.target.nodeName == "IMG") {
-    selectedElement = e.target;
-    setPinnerCoords(e.target, "IMAGE");
+function showImagePinner (e) {
+  if (e.target.nodeName === "IMG") {
+    if (!isImageFound) {
+      selectedElement = e.target;
+      setPinnerCoords(e.target, "IMAGE");
+    } else {
+      setPinnerCoords(e.target, "IMAGE");
+    }
   } else if (
     !e.target.classList.contains("clipper") &&
     selectedElement &&
-    selectedElement.nodeName == "IMG"
+    selectedElement.nodeName === "IMG"
   ) {
     setPinnerCoords(null, "EMPTY");
+    if (selection) {
+      selectedElement = document.createElement("div");
+      selectedElement.append(selection.getRangeAt(0).cloneContents());
+    }
   }
-}
+  if (
+    !e.target.classList.contains("clipper") &&
+    selectedElement &&
+    selectedElement.nodeName !== "IMG"
+  ) {
+    setPinnerCoords(selection, "HTML");
+  }
+};
+
+pinner.onmousedown = function () {
+  var node;
+  if (!findImageNode(selectedElement, clientData)) {
+    node = selectedElement;
+    if (selectedElement.nodeName === "IMG") {
+      createPostData(clientData, [node]);
+    } else {
+      createPostData(clientData, [node]);
+    }
+  }
+};
