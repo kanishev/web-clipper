@@ -312,7 +312,9 @@ var selectedElement = null;
 var selection = null;
 var clientData = null;
 var isImageFound = false;
-console.log(chrome.runtime.getURL("injected.js"));
+var s = document.createElement("script");
+s.src = chrome.runtime.getURL("injected.js");
+document.head.append(s);
 chrome.runtime.sendMessage("getPinnerStatus");
 chrome.runtime.onMessage.addListener(function (message) {
   var node, pinnerStatus;

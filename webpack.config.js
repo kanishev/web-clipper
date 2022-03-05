@@ -48,6 +48,10 @@ module.exports = {
           to: path.resolve(__dirname, "dist"),
         },
         { from: "images", to: path.resolve(__dirname, "dist") },
+        {
+          from: path.resolve(__dirname, "src/injected.js"),
+          to: path.resolve(__dirname, "dist"),
+        },
       ],
     }),
   ],

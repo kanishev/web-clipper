@@ -7,6 +7,10 @@ let selection = null;
 let clientData = null;
 let isImageFound = false;
 
+var s = document.createElement("script");
+s.src = chrome.runtime.getURL("injected.js");
+document.head.append(s);
+
 chrome.runtime.sendMessage("getPinnerStatus");
 
 chrome.runtime.onMessage.addListener(function (message) {
