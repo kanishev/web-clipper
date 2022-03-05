@@ -1,6 +1,10 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
+const webpack = require("webpack");
+
+const isDev = process.env.NODE_ENV === "development";
+const isProd = !isDev;
 
 module.exports = {
   context: path.resolve(__dirname, "./src"),
@@ -16,6 +20,7 @@ module.exports = {
   output: {
     filename: "[name].js",
     path: path.resolve(__dirname, "dist"),
+    clean: true,
   },
   devServer: {
     static: path.join(__dirname, "src"),
@@ -23,7 +28,11 @@ module.exports = {
     hot: true,
     port: 9000,
   },
+  devtool: "cheap-module-source-map",
   plugins: [
+    new webpack.DefinePlugin({
+      MODE: JSON.stringify(process.env.NODE_ENV),
+    }),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, "src", "./popup.html"),
       filename: "popup.html",
@@ -32,7 +41,12 @@ module.exports = {
     }),
     new CopyPlugin({
       patterns: [
-        { from: "manifest.json", to: path.resolve(__dirname, "dist") },
+        {
+          from: isProd
+            ? path.resolve(__dirname, "src/prod/manifest.json")
+            : "manifest.json",
+          to: path.resolve(__dirname, "dist"),
+        },
         { from: "images", to: path.resolve(__dirname, "dist") },
       ],
     }),

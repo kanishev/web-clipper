@@ -34,8 +34,12 @@ chrome.contextMenus.onClicked.addListener(function (target) {
 });
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  let url =
+    MODE == "development"
+      ? "http://clipper.stage.weje.io/push"
+      : "http://clipper.app.weje.io/push";
   if (request.content) {
-    fetch("https://clipper.stage.weje.io/push", {
+    fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

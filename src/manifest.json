@@ -1,5 +1,5 @@
 {
-  "name": "Clipper Client",
+  "name": "Clipper Client - Dev",
   "description": "Build an Extension!",
   "version": "1.0.0",
   "manifest_version": 3,
@@ -15,6 +15,12 @@
   "externally_connectable": {
     "matches": ["http://localhost:8080/"]
   },
+  "web_accessible_resources": [
+    {
+      "resources": ["injected.js"],
+      "matches": ["http://localhost:8080/*", "https://dev.weje.io/*"]
+    }
+  ],
   "action": {
     "default_title": "Open",
     "default_popup": "popup.html"

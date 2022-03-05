@@ -6,6 +6,7 @@ let selectedElement = null;
 let selection = null;
 let clientData = null;
 let isImageFound = false;
+
 chrome.runtime.sendMessage("getPinnerStatus");
 
 chrome.runtime.onMessage.addListener(function (message) {
@@ -53,7 +54,7 @@ chrome.runtime.onMessage.addListener(function (message) {
   }
 });
 
-function showTextPinner () {
+function showTextPinner() {
   var c, i;
   selection = document.getSelection();
   if (!selection.isCollapsed) {
@@ -75,9 +76,9 @@ function showTextPinner () {
     selection = null;
     isImageFound = false;
   }
-};
+}
 
-function showImagePinner (e) {
+function showImagePinner(e) {
   if (e.target.nodeName === "IMG") {
     if (!isImageFound) {
       selectedElement = e.target;
@@ -103,7 +104,7 @@ function showImagePinner (e) {
   ) {
     setPinnerCoords(selection, "HTML");
   }
-};
+}
 
 pinner.onmousedown = function () {
   var node;
