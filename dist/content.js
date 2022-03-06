@@ -308,19 +308,33 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+var s = document.createElement("script");
+s.src = chrome.runtime.getURL("injected.js");
+
+s.onload = function () {
+  this.remove();
+};
+
+document.head.append(s);
 var selectedElement = null;
 var selection = null;
 var clientData = null;
 var isImageFound = false;
-var s = document.createElement("script");
-s.src = chrome.runtime.getURL("injected.js");
-document.head.append(s);
 chrome.runtime.sendMessage("getPinnerStatus");
+chrome.runtime.sendMessage("getExtesionId");
 chrome.runtime.onMessage.addListener(function (message) {
   var node, pinnerStatus;
 
   if (message.clientData) {
     clientData = message.clientData;
+  }
+
+  if (message.id) {
+    setTimeout(function () {
+      document.dispatchEvent(new CustomEvent("getExtensionId", {
+        detail: message.id
+      }));
+    }, 1000);
   }
 
   if (message.pinnerStatus) {

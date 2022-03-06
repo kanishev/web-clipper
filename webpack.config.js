@@ -13,6 +13,7 @@ module.exports = {
     popup: "./popup.js",
     content: "/content.js",
     pinner: "/pinner.js",
+    // injected: "/injected.js",\
     alert: "/alert.js",
     utils: "./utils.js",
     background: "/background.js",

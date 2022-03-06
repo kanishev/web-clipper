@@ -49,6 +49,17 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
       console.error("Error:", error);
     });
   }
+  if (request === "getExtesionId") {
+    chrome.tabs.query(
+      {
+        active: true,
+        currentWindow: true,
+      },
+      function (tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, { id: chrome.runtime.id });
+      }
+    );
+  }
   if (request === "getCurrentUrl") {
     chrome.tabs.query(
       {

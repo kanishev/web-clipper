@@ -19,6 +19,10 @@
     {
       "resources": ["injected.js"],
       "matches": ["http://localhost:8080/*", "https://dev.weje.io/*"]
+    },
+    {
+      "resources": ["set.js"],
+      "matches": ["http://localhost:8080/*", "https://dev.weje.io/*"]
     }
   ],
   "action": {

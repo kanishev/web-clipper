@@ -2,22 +2,36 @@ import { pinner, setPinnerCoords, togglePinner } from "./pinner.js";
 import { createPostData, findImageNode } from "./utils.js";
 import "./alert.js";
 
+var s = document.createElement("script");
+s.src = chrome.runtime.getURL("injected.js");
+s.onload = function () {
+  this.remove();
+};
+document.head.append(s);
+
 let selectedElement = null;
 let selection = null;
 let clientData = null;
 let isImageFound = false;
 
-var s = document.createElement("script");
-s.src = chrome.runtime.getURL("injected.js");
-document.head.append(s);
-
 chrome.runtime.sendMessage("getPinnerStatus");
+chrome.runtime.sendMessage("getExtesionId");
 
 chrome.runtime.onMessage.addListener(function (message) {
   var node, pinnerStatus;
+
   if (message.clientData) {
     clientData = message.clientData;
   }
+
+  if (message.id) {
+    setTimeout(() => {
+      document.dispatchEvent(
+        new CustomEvent("getExtensionId", { detail: message.id})
+      );
+    }, 1000);
+  }
+
   if (message.pinnerStatus) {
     pinnerStatus = message.pinnerStatus;
     togglePinner(message.pinnerStatus);
