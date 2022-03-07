@@ -13,14 +13,15 @@ module.exports = {
     popup: "./popup.js",
     content: "/content.js",
     pinner: "/pinner.js",
-    // injected: "/injected.js",\
     alert: "/alert.js",
     utils: "./utils.js",
     background: "/background.js",
   },
   output: {
     filename: "[name].js",
-    path: path.resolve(__dirname, "dist"),
+    path: isDev
+      ? path.resolve(__dirname, "dist")
+      : path.resolve(__dirname, "prod"),
     clean: true,
   },
   devServer: {
@@ -46,12 +47,21 @@ module.exports = {
           from: isProd
             ? path.resolve(__dirname, "src/prod/manifest.json")
             : "manifest.json",
-          to: path.resolve(__dirname, "dist"),
+          to: isDev
+            ? path.resolve(__dirname, "dist")
+            : path.resolve(__dirname, "prod"),
         },
-        { from: "images", to: path.resolve(__dirname, "dist") },
+        {
+          from: "images",
+          to: isDev
+            ? path.resolve(__dirname, "dist")
+            : path.resolve(__dirname, "prod"),
+        },
         {
           from: path.resolve(__dirname, "src/injected.js"),
-          to: path.resolve(__dirname, "dist"),
+          to: isDev
+            ? path.resolve(__dirname, "dist")
+            : path.resolve(__dirname, "prod"),
         },
       ],
     }),

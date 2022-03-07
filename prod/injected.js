@@ -1,0 +1,1 @@
+document.addEventListener("getExtensionId",(function(e){e.detail&&(window.CLIPPER_EXTESION_ID=e.detail)}));

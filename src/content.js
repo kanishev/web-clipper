@@ -27,7 +27,7 @@ chrome.runtime.onMessage.addListener(function (message) {
   if (message.id) {
     setTimeout(() => {
       document.dispatchEvent(
-        new CustomEvent("getExtensionId", { detail: message.id})
+        new CustomEvent("getExtensionId", { detail: message.id })
       );
     }, 1000);
   }
