@@ -320,7 +320,7 @@ var selectedElement = null;
 var selection = null;
 var clientData = null;
 var isImageFound = false;
-console.log("DEVEL");
+console.log("bla");
 chrome.runtime.sendMessage("getPinnerStatus");
 chrome.runtime.sendMessage("getExtesionId");
 chrome.runtime.onMessage.addListener(function (message) {
