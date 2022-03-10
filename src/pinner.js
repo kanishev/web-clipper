@@ -6,10 +6,7 @@ pinner.classList.add("clipper");
 pinner.style =
   "position: absolute; top: -50px; left: 10px; z-index: 9999999; cursor: pointer; display: none; width: 32px; height: 32px;";
 
-let interval = null;
-
 export function setPinnerCoords(selection, type) {
-  clearInterval(interval);
   if (!selection && type === "EMPTY") {
     pinner.style.top = -50 + "px";
     pinner.style.left = 0;
@@ -18,22 +15,14 @@ export function setPinnerCoords(selection, type) {
       selection.getBoundingClientRect().y + window.scrollY + 10 + "px";
     pinner.style.left = selection.getBoundingClientRect().x + 10 + "px";
   } else {
-    pinner.style.top =
-      selection.getRangeAt(0).getBoundingClientRect().y + window.scrollY + "px";
-    pinner.style.left =
-      selection.getRangeAt(0).getBoundingClientRect().x <= 20
-        ? 5
-        : selection.getRangeAt(0).getBoundingClientRect().x - 35 + "px";
-    interval = setInterval(function () {
-      pinner.style.top =
-        selection.getRangeAt(0).getBoundingClientRect().y +
-        window.scrollY +
-        "px";
-      pinner.style.left =
-        selection.getRangeAt(0).getBoundingClientRect().x <= 20
-          ? 5
-          : selection.getRangeAt(0).getBoundingClientRect().x - 35 + "px";
-    }, 500);
+    let position = selection.getRangeAt(0).getBoundingClientRect();
+    if (position.y <= 0 && Math.abs(position.y) < position.height) {
+      pinner.style.top = window.scrollY + 10 + "px";
+      pinner.style.left = position.x <= 20 ? 5 : position.x - 35 + "px";
+    } else {
+      pinner.style.top = position.y + window.scrollY + "px";
+      pinner.style.left = position.x <= 20 ? 5 : position.x - 35 + "px";
+    }
   }
 }
 

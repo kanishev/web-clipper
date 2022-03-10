@@ -88,11 +88,13 @@ function showTextPinner() {
       c++;
     }
     setPinnerCoords(selection, "HTML");
+    document.addEventListener("scroll", scrollHandler);
   } else {
     setPinnerCoords(null, "EMPTY");
     selectedElement = null;
     selection = null;
     isImageFound = false;
+    document.removeEventListener("scroll", scrollHandler);
   }
 }
 
@@ -135,3 +137,7 @@ pinner.onmousedown = function () {
     }
   }
 };
+
+function scrollHandler() {
+  setPinnerCoords(selection, "HTML");
+}
